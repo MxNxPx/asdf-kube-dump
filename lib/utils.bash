@@ -40,7 +40,7 @@ download_release() {
   filename="$2"
 
   # prior to v1.0.7 the tool could be downloaded from a different URL
-  if [ "$version" -lt "1.0.7" ]; then 
+  if [ "$(echo $version| sed 's/\.//g')" -lt "107" ]; then 
      url="$GH_REPO/releases/download/v${version}/${TOOL_NAME}"
   else
      url="$GH_REPO_RAW/${version}/${TOOL_NAME}"
