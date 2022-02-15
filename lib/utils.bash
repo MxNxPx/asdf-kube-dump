@@ -3,6 +3,7 @@
 set -euo pipefail
 
 GH_REPO="https://github.com/WoozyMasta/kube-dump"
+GH_REPO_RAW="https://raw.githubusercontent.com/WoozyMasta/kube-dump"
 TOOL_NAME="kube-dump"
 TOOL_TEST="kube-dump --help"
 
@@ -38,7 +39,12 @@ download_release() {
   version="$1"
   filename="$2"
 
-  url="$GH_REPO/releases/download/v${version}/${TOOL_NAME}"
+  # prior to v1.0.7 the tool could be downloaded from a different URL
+  if [ "$version" -lt "1.0.7" ]; then 
+     url="$GH_REPO/releases/download/v${version}/${TOOL_NAME}"
+  else
+     url="$GH_REPO_RAW/${version}/${TOOL_NAME}"
+  fi
 
   echo "* Downloading $TOOL_NAME release $version..."
   curl "${curl_opts[@]}" -o "$filename" -C - "$url" || fail "Could not download $url"
